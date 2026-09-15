@@ -25,10 +25,10 @@ useEffect(() => {
                 <Ionicons name="person" size={24} color={"#007AFF"} />
             </View>
 
-            <view style={styles.infoContainer}>
+            <View style={styles.infoContainer}>
                 <Text style={styles.nomeAluno}>{item.nome}</Text>
                 <Text style={styles.detalhesAluno}>Idade: {item.idade} - KG:{item.peso} </Text>
-            </view>
+            </View>
             <Ionicons name="chevron-forward" size={24} color={"#C7C7CC"}/>
         </TouchableOpacity>
     );

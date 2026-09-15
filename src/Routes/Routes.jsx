@@ -16,7 +16,6 @@ export default function Routes(){
             <Stack.Navigator>
                 <Stack.Screen name="CadastroProfessor" component={CadastroProfessor}/>
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false}}/>
-
                 <Stack.Screen name="dashboardProfessor" component={dashboardProfessor} options={{ headerShown: false}}/>
                 <Stack.Screen name="CadastroAluno" component={CadastroAluno}/>
                 <Stack.Screen name="ListaAlunos" component={ListaAlunos}/>

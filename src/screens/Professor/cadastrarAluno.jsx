@@ -23,6 +23,7 @@ export default function CadastroAluno({ navigation }) {
     try {
      
       await cadastrarAluno(nome, idade, peso, altura, telefone);
+       navigation.goBack();
 
       console.log("Cadastro com sucesso.");
 
@@ -48,7 +49,7 @@ export default function CadastroAluno({ navigation }) {
 
        <TextInput
             style={styles.input}
-            placeholder="Ex: 25"
+            placeholder="Idade"
             placeholderTextColor="#A1A1A6"
             keyboardType="numeric"
             value={idade}
@@ -57,7 +58,7 @@ export default function CadastroAluno({ navigation }) {
 
       <TextInput
                 style={styles.input}
-                placeholder="Ex: 75.5"
+                placeholder="Peso"
                 placeholderTextColor="#A1A1A6"
                 keyboardType="numeric"
                 value={peso}
@@ -66,7 +67,7 @@ export default function CadastroAluno({ navigation }) {
 
       <TextInput
                 style={styles.input}
-                placeholder="Ex: 1.75"
+                placeholder="Altura"
                 placeholderTextColor="#A1A1A6"
                 keyboardType="numeric"
                 value={altura}

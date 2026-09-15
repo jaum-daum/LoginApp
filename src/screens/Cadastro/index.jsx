@@ -26,6 +26,7 @@ export default function CadastroProfessor({ navigation }) {
 
       console.log("Cadastro com sucesso.");
       await listarProfessor();
+       navigation.goBack();
 
     } catch (error) {
       console.log("ERRO NO BANCO:", error);
@@ -85,7 +86,7 @@ export default function CadastroProfessor({ navigation }) {
 
       <ComponenteBotao title="Cadastrar" onPress={handleCadastrar} />
          
-      <TouchableOpacity style={{ marginTop: 10 }} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={{ marginTop: 10 }} onPress={()=> navigation.navigate('Login')}>
         <Text style={{ textAlign: 'center' }}>
           Já tem uma conta?<Text style={{ color: '#007AFF', fontWeight: 'bold' }}> Faça login</Text>
         </Text>
