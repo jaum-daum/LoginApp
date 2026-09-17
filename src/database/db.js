@@ -104,3 +104,25 @@ export async function cadastrarTreino(id_aluno, id_professor, nome_treino, objet
         [id_aluno, id_professor, nome_treino, objetivo, duracao]
     );
 }
+
+//Atualizar Aluno
+export async function atualizarAluno(id_aluno, nome, idade, peso, altura, telefone){
+  const db = await openDatabase();
+  await db.runAsync(
+    'UPDATE aluno SET nome = ?, idade = ?, peso = ?, altura = ?, telefone = ? WHERE id_aluno = ?',
+    nome, idade, peso, altura, telefone, id_aluno
+  );
+  console.log('Aluno atualizado ID:', id_aluno);
+}
+
+//Deletar Aluno
+export async function deletarAluno(id_aluno){
+  const db = await openDatabase();
+  try{
+  await db.runAsync('DELETE FROM aluno WHERE id_aluno = ?', [id_aluno]);
+  await db.runAsync('DELETE FROM treino WHERE id_aluno = ?', [id_aluno]);
+  console.log('Aluno atualizado ID:', id_aluno);
+  }catch(error){
+    console.log('Erro:', error)
+  }
+}

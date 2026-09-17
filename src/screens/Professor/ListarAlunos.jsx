@@ -20,7 +20,7 @@ useEffect(() => {
     }
 
     const cardAluno = ({item}) => (
-        <TouchableOpacity style={styles.alunoCard} onPress={() => navigation.navigate('cadastrarTreinoAluno')}>
+        <TouchableOpacity style={styles.alunoCard} onPress={() => navigation.navigate('EditarAluno', {aluno: item})}>
             <View style={styles.avatarContainer}>
                 <Ionicons name="person" size={24} color={"#007AFF"} />
             </View>
