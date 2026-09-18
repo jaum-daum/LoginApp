@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-export async function openDatabase(){
+export async function openDatabase() {
   const db = await SQLite.openDatabaseAsync('academia');
 
   await db.execAsync(`
@@ -42,87 +42,117 @@ export async function openDatabase(){
 }
 
 //Cadastro Professor
-export async function cadastrarProfessor(nome, email, senha, especialidade, contato){
-    const db = await openDatabase();
+export async function cadastrarProfessor(
+  nome,
+  email,
+  senha,
+  especialidade,
+  contato,
+) {
+  const db = await openDatabase();
 
-    await db.runAsync(
-        'INSERT INTO professor (nome, email, senha, especialidade, contato) VALUES (?, ?, ?, ?, ?)',
-        [nome, email, senha, especialidade, contato]
-    );
-
+  await db.runAsync(
+    'INSERT INTO professor (nome, email, senha, especialidade, contato) VALUES (?, ?, ?, ?, ?)',
+    [nome, email, senha, especialidade, contato],
+  );
 }
 //Listagem Professor
-export async function listarProfessor(){
-    const db = await openDatabase();
+export async function listarProfessor() {
+  const db = await openDatabase();
 
-    const professores = await db.getAllAsync(
-        'SELECT * FROM professor'
-    );
+  const professores = await db.getAllAsync('SELECT * FROM professor');
 
-    console.log('Professores:', professores )
+  console.log('Professores:', professores);
 
-    return professores;
+  return professores;
 }
 //Fazer Login
-export async function fazerLogin(email, senha){
+export async function fazerLogin(email, senha) {
   const db = await openDatabase();
 
   const professor = await db.getFirstAsync(
     'SELECT * FROM professor WHERE email = ? AND senha = ?',
-    email, senha
-  )
+    email,
+    senha,
+  );
   return professor;
 }
 
 //Cadastro Aluno
-export async function cadastrarAluno(nome, idade, peso, altura, telefone){
-    const db = await openDatabase();
+export async function cadastrarAluno(nome, idade, peso, altura, telefone) {
+  const db = await openDatabase();
 
-    await db.runAsync(
-        'INSERT INTO aluno (nome, idade, peso, altura, telefone) VALUES (?, ?, ?, ?, ?)',
-        [nome, idade, peso, altura, telefone]
-    );
-
+  await db.runAsync(
+    'INSERT INTO aluno (nome, idade, peso, altura, telefone) VALUES (?, ?, ?, ?, ?)',
+    [nome, idade, peso, altura, telefone],
+  );
 }
 //Listagem de Alunos
-export async function listarAlunos(){
-    const db = await openDatabase();
+export async function listarAlunos() {
+  const db = await openDatabase();
 
-    const alunos = await db.getAllAsync(
-        'SELECT * FROM aluno'
-    );
+  const alunos = await db.getAllAsync('SELECT * FROM aluno');
 
-    return alunos;
+  return alunos;
 }
 
 //Cadastro Treino
-export async function cadastrarTreino(id_aluno, id_professor, nome_treino, objetivo, duracao){
-    const db = await openDatabase();
+export async function cadastrarTreino(
+  id_aluno,
+  id_professor,
+  nome_treino,
+  objetivo,
+  duracao,
+) {
+  const db = await openDatabase();
 
-    await db.runAsync(
-        'INSERT INTO treino (id_aluno, id_professor, nome_treino, objetivo, duracao) VALUES (?, ?, ?, ?, ?)',
-        [id_aluno, id_professor, nome_treino, objetivo, duracao]
-    );
+  await db.runAsync(
+    'INSERT INTO treino (id_aluno, id_professor, nome_treino, objetivo, duracao) VALUES (?, ?, ?, ?, ?)',
+    [id_aluno, id_professor, nome_treino, objetivo, duracao],
+  );
 }
 
 //Atualizar Aluno
-export async function atualizarAluno(id_aluno, nome, idade, peso, altura, telefone){
+export async function atualizarAluno(
+  id_aluno,
+  nome,
+  idade,
+  peso,
+  altura,
+  telefone,
+) {
   const db = await openDatabase();
   await db.runAsync(
     'UPDATE aluno SET nome = ?, idade = ?, peso = ?, altura = ?, telefone = ? WHERE id_aluno = ?',
-    nome, idade, peso, altura, telefone, id_aluno
+    nome,
+    idade,
+    peso,
+    altura,
+    telefone,
+    id_aluno,
   );
   console.log('Aluno atualizado ID:', id_aluno);
 }
 
 //Deletar Aluno
-export async function deletarAluno(id_aluno){
+export async function deletarAluno(id_aluno) {
   const db = await openDatabase();
-  try{
-  await db.runAsync('DELETE FROM aluno WHERE id_aluno = ?', [id_aluno]);
-  await db.runAsync('DELETE FROM treino WHERE id_aluno = ?', [id_aluno]);
-  console.log('Aluno atualizado ID:', id_aluno);
-  }catch(error){
-    console.log('Erro:', error)
+  try {
+    await db.runAsync('DELETE FROM aluno WHERE id_aluno = ?', [id_aluno]);
+    await db.runAsync('DELETE FROM treino WHERE id_aluno = ?', [id_aluno]);
+    console.log('Aluno atualizado ID:', id_aluno);
+  } catch (error) {
+    console.log('Erro:', error);
   }
+}
+
+export async function buscarTreinoTelefone(telefoneAluno) {
+  const db = await openDatabase();
+
+  const treinos = await db.getAllAsync(
+    'Select treino.*, aluno.nome AS nome_aluno, aluno.telefone AS telefone_aluno, professor.nome AS nome_professor FROM aluno LEFT JOIN treino ON aluno.id_aluno = treino.id_aluno LEFT JOIN professor ON treino.id_professor = professor.id WHERE aluno.telefone LIKE?',
+    [`%${telefoneAluno}%`],
+  );
+
+  return treinos;
 }

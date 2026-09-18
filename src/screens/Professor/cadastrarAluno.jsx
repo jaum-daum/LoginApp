@@ -1,80 +1,103 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { styles } from './style';
-import ComponenteBotao from '../../components/ComponenteBotao';
-import { cadastrarAluno} from '../../database/db';
 import React, { useState } from 'react';
-import { Dropdown } from 'react-native-element-dropdown';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ScrollView,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import { cadastrarAluno } from '../../database/db';
 
-export default function CadastroAluno({ navigation }) {
+export default function CadastrarAluno({ navigation }) {
   const [nome, setNome] = useState('');
   const [idade, setIdade] = useState('');
   const [peso, setPeso] = useState('');
-  const [altura, setAltura] = useState(''); 
+  const [altura, setAltura] = useState('');
   const [telefone, setTelefone] = useState('');
 
-  const handleCadastrar = async () => {
-
-    if (!nome || !idade || !peso || !altura || !telefone) {
-      Alert.alert('Atenção', 'Preencha todos os campos.');
+  const handleSalvarAluno = async () => {
+    if (!nome || !idade) {
+      Alert.alert('Atenção', 'Preencha pelo menos o Nome e a Idade do aluno.');
       return;
     }
 
     try {
-     
       await cadastrarAluno(nome, idade, peso, altura, telefone);
-       navigation.goBack();
 
-      console.log("Cadastro com sucesso.");
-
+      Alert.alert('Sucesso!', 'Aluno cadastrado com sucesso.');
+      navigation.goBack();
     } catch (error) {
-      console.log("ERRO NO BANCO:", error);
-      Alert.alert('Erro', 'Não foi possível cadastrar.');
+      console.error(error);
+      Alert.alert('Erro', 'Não foi possível cadastrar o aluno.');
     }
   };
-  
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Ionicons name="arrow-back" size={24} color="#1C1C1E" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Novo Aluno</Text>
+          <View style={{ width: 24 }} />
+        </View>
 
-      <Image source={require('../../assets/android-icon-foreground.png')} style={styles.logo} />
-
-      <Text style={styles.texto}>Cadastro</Text>
-
-      <TextInput 
-        placeholder='Nome' 
-        style={styles.input}
-        value={nome}
-        onChangeText={setNome}
-      />
-
-       <TextInput
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Nome Completo *</Text>
+          <TextInput
             style={styles.input}
-            placeholder="Idade"
+            placeholder="Ex: Carlos Silva"
+            placeholderTextColor="#A1A1A6"
+            value={nome}
+            onChangeText={setNome}
+          />
+
+          <Text style={styles.label}>Idade *</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex: 25"
             placeholderTextColor="#A1A1A6"
             keyboardType="numeric"
             value={idade}
             onChangeText={setIdade}
           />
 
-      <TextInput
+          <View style={styles.row}>
+            <View style={styles.halfInputContainer}>
+              <Text style={styles.label}>Peso (kg)</Text>
+              <TextInput
                 style={styles.input}
-                placeholder="Peso"
+                placeholder="Ex: 75.5"
                 placeholderTextColor="#A1A1A6"
                 keyboardType="numeric"
                 value={peso}
                 onChangeText={setPeso}
               />
+            </View>
 
-      <TextInput
+            <View style={styles.halfInputContainer}>
+              <Text style={styles.label}>Altura (m)</Text>
+              <TextInput
                 style={styles.input}
-                placeholder="Altura"
+                placeholder="Ex: 1.75"
                 placeholderTextColor="#A1A1A6"
                 keyboardType="numeric"
                 value={altura}
                 onChangeText={setAltura}
               />
+            </View>
+          </View>
 
-               <TextInput
+          <Text style={styles.label}>Telefone / WhatsApp</Text>
+          <TextInput
             style={styles.input}
             placeholder="Ex: (11) 98765-4321"
             placeholderTextColor="#A1A1A6"
@@ -83,14 +106,50 @@ export default function CadastroAluno({ navigation }) {
             onChangeText={setTelefone}
           />
 
-      <ComponenteBotao title="Cadastrar" onPress={handleCadastrar} />
-         
-      <TouchableOpacity style={{ marginTop: 10 }} onPress={() => navigation.goBack()}>
-        <Text style={{ textAlign: 'center' }}>
-          Já tem uma conta?<Text style={{ color: '#007AFF', fontWeight: 'bold' }}> Faça login</Text>
-        </Text>
-      </TouchableOpacity>
-      
-    </View>
+          <TouchableOpacity style={styles.button} onPress={handleSalvarAluno}>
+            <Text style={styles.buttonText}>Salvar Aluno</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: { flex: 1, backgroundColor: '#F8F9FA' },
+  scrollContainer: { padding: 20, paddingBottom: 40 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 25,
+    marginTop: 10,
+  },
+  backButton: { padding: 4 },
+  headerTitle: { fontSize: 18, fontWeight: 'bold', color: '#1C1C1E' },
+  formContainer: { gap: 12 },
+  label: { fontSize: 14, fontWeight: '600', color: '#3A3A3C', marginBottom: 4 },
+  input: {
+    backgroundColor: '#FFF',
+    padding: 14,
+    borderRadius: 12,
+    fontSize: 16,
+    color: '#1C1C1E',
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+  },
+  row: { flexDirection: 'row', justifyContent: 'space-between' },
+  halfInputContainer: { width: '48%' },
+  button: {
+    backgroundColor: '#007AFF',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 20,
+    shadowColor: '#007AFF',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  buttonText: { color: '#FFF', fontSize: 16, fontWeight: 'bold' },
+});
