@@ -32,7 +32,7 @@ export default function ListaAlunos({ navigation }) {
   const cardAluno = ({ item }) => (
     <TouchableOpacity
       style={styles.alunoCard}
-      onPress={() => navigation.navigate('EditarAluno', { aluno: item })}
+      onPress={() => navigation.navigate('TreinosAluno', { aluno: item })}
     >
       <View style={styles.avatarContainer}>
         <Ionicons name="person" size={24} color={'#007AFF'} />

@@ -6,6 +6,7 @@ import dashboardProfessor from '../screens/Professor/DashboardProfessor';
 import ListaAlunos from '../screens/Professor/ListarAlunos';
 import cadastrarTreinoAluno from '../screens/Professor/cadastrarTreino';
 import EditarAluno from '../screens/Professor/EditarAluno';
+import TreinosAluno from '../screens/Professor/TreinosAluno';
 import buscaTreinoAluno from '../screens/Aluno/BuscaTreinoAluno';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -36,6 +37,11 @@ export default function Routes() {
         <Stack.Screen
           name="EditarAluno"
           component={EditarAluno}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TreinosAluno"
+          component={TreinosAluno}
           options={{ headerShown: false }}
         />
         <Stack.Screen

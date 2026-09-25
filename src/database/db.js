@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 
 export async function openDatabase() {
-  const db = await SQLite.openDatabaseAsync('academia');
+  const db = await SQLite.openDatabaseAsync('academia.db');
 
   await db.execAsync(`
     PRAGMA journal_mode = WAL;
@@ -154,5 +154,15 @@ export async function buscarTreinoTelefone(telefoneAluno) {
     [`%${telefoneAluno}%`],
   );
 
+  return treinos;
+}
+
+// Listar Treinos por Aluno
+export async function listarTreinosPorAluno(id_aluno) {
+  const db = await openDatabase();
+  const treinos = await db.getAllAsync(
+    'SELECT * FROM treino WHERE id_aluno = ?',
+    [id_aluno],
+  );
   return treinos;
 }

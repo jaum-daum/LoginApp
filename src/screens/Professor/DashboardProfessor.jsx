@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import MenuCard from '../../components/MenuCard';
 
 export default function dashboardProfessor({ navigation }) {
   const stats = {
@@ -48,37 +49,23 @@ export default function dashboardProfessor({ navigation }) {
         <Text style={styles.sectionTitle}>Ações Rápidas</Text>
 
         <View style={styles.menuContainer}>
-          <TouchableOpacity
-            style={styles.menuCard}
+          <MenuCard
+            title="Cadastrar Novo Aluno"
+            description="Adicione um aluno ao seu sistema"
+            iconName="person-add"
+            iconColor="#007AFF"
+            iconBgColor="#E1F0FF"
             onPress={() => navigation.navigate('CadastroAluno')}
-          >
-            <View style={[styles.iconBox, { backgroundColor: '#E1F0FF' }]}>
-              <Ionicons name="person-add" size={24} color="#007AFF" />
-            </View>
-            <View style={styles.menuTextContainer}>
-              <Text style={styles.menuTitle}>Cadastrar Novo Aluno</Text>
-              <Text style={styles.menuDescription}>
-                Adicione um aluno ao seu sistema
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
-          </TouchableOpacity>
+          />
 
-          <TouchableOpacity
-            style={styles.menuCard}
+          <MenuCard
+            title="Gerenciar Alunos & Treinos"
+            description="Visualize alunos e monte fichas"
+            iconName="fitness"
+            iconColor="#34C759"
+            iconBgColor="#E8F8F0"
             onPress={() => navigation.navigate('ListaAlunos')}
-          >
-            <View style={[styles.iconBox, { backgroundColor: '#E8F8F0' }]}>
-              <Ionicons name="fitness" size={24} color="#34C759" />
-            </View>
-            <View style={styles.menuTextContainer}>
-              <Text style={styles.menuTitle}>Gerenciar Alunos & Treinos</Text>
-              <Text style={styles.menuDescription}>
-                Visualize alunos e monte fichas
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
-          </TouchableOpacity>
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
